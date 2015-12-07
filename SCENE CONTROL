@@ -5,7 +5,7 @@ definition(
     description: "This app sets a lighting scene for 1 OR 2 groups of your HUE light switches to specific colors / levels, and/or turn 1 or 2 sets of switches on / off.",
     category: "My Apps",
     iconUrl: "https://s3.amazonaws.com/smartapp-icons/Convenience/Cat-Convenience.png",
-    iconX2Url: "https://s3.amazonaws.com/smartapp-icons/Convenience/Cat-Convenience@2x.png")
+    iconX2Url: "https://s3.amazonaws.com/smartapp-icons/Convenience/Cat-Convenience@2x.png"
 )
 
 preferences {
