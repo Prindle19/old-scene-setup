@@ -5,7 +5,7 @@ definition(
     description: "This app sets a lighting scene for 1 OR 2 groups of your HUE light switches to specific colors / levels, and/or turn 1 or 2 sets of switches on / off.",
     category: "My Apps",
     iconUrl: "https://s3.amazonaws.com/smartapp-icons/Convenience/Cat-Convenience.png",
-    iconX2Url: "https://s3.amazonaws.com/smartapp-icons/Convenience/Cat-Convenience@2x.png")
+    iconX2Url: "https://s3.amazonaws.com/smartapp-icons/Convenience/Cat-Convenience@2x.png"
 )
 
 preferences {
@@ -34,8 +34,8 @@ preferences {
 		input "switch2", "capability.switch", multiple: true, required: false
 	}
   	section("And then off when there's been no movement for..."){
-		input "delayMinutes", "number", title: "Minutes?"
-        input "motion", "capability.motionSensor", title: "on this sensor...", required: true, multiple: true
+		input "delayMinutes", "number", title: "Minutes?", required: false
+        input "motion", "capability.motionSensor", title: "on this sensor...", required: false, multiple: true
 
 	}
 }
@@ -48,8 +48,8 @@ def installed()
 
 def updated() {
 
-	unsubscribe()
-    initialize()
+   unsubscribe()
+   initialize()
 
 }
 
@@ -251,7 +251,7 @@ def offHandler(evt) {
 		if(delayMinutes) {
 			runIn(delayMinutes*60, turnOffMotionAfterDelay, [overwrite: false])
 		} else {
-			turnOffMotionAfterDelay()
+			turnOff()
 		}
 }
 
@@ -260,13 +260,14 @@ def turnOffMotionAfterDelay() {
 	if (state.motionStopTime && state.lastStatus != "off") {
 		def elapsed = now() - state.motionStopTime
 		if (elapsed >= (delayMinutes ?: 0) * 60000L) {
-			group1.setColor([level: 0])
-			group2.setColor([level: 0])
-			switch1.setColor([level: 0])
-           
-			theSwitch.off()
-           
-            
+			turnOff()
 		}
 	}
+}
+
+def turnOff(){
+	group1.setColor([level: 0])
+	group2.setColor([level: 0])
+	switch1.setColor([level: 0]) 
+	theSwitch.off()
 }
